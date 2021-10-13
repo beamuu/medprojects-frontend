@@ -55,8 +55,11 @@ h6 {
 p, b {
     font-weight: 400;
     color: rgb(79, 91, 109);
-    font-size: 18px;
+    font-size: 15px;
     margin: 0;
+}
+b {
+    font-weight: 600;
 }
 .bold {
     font-weight: 700;

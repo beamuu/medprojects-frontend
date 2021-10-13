@@ -1,4 +1,6 @@
 import { createContext, useState } from "react";
+import { hospitalArray } from "../data/hospital";
+import useHospital from "../hooks/useHospital";
 
 interface IHospitalListProvider {
     children: any
@@ -6,24 +8,30 @@ interface IHospitalListProvider {
 
 const defaultContextValue = {
     hospitalIndex: 0,
-    setHospitalIndex: () => {}
+    setHospitalIndex: () => {},
+    hospitalContractAddress: "",
+    setHospitalContractAddress: () => {},
 }
 
 export interface IHospitalListContext {
     hospitalIndex: number;
     setHospitalIndex: React.Dispatch<React.SetStateAction<number>> | (() => void);
+    hospitalContractAddress: string;
+    setHospitalContractAddress: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const HospitalListContext = createContext<IHospitalListContext>(defaultContextValue);
 
 export function HospitalListProvider({ children }: IHospitalListProvider) {
     const [hospitalIndex, setHospitalIndex] = useState<number>(0);
-    
-    console.log(hospitalIndex)
+    const [hospitalContractAddress, setHospitalContractAddress] = useState<string>(hospitalArray[0].address);
+
     return (
         <HospitalListContext.Provider value={{
             hospitalIndex,
-            setHospitalIndex
+            setHospitalIndex,
+            hospitalContractAddress,
+            setHospitalContractAddress
         }}>
             {children}
         </HospitalListContext.Provider>
