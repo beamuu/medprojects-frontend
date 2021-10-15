@@ -25,12 +25,12 @@ export interface IForm {
 const defaultContextValue = {
     startDate: "",
     endDate: "",
-    department: [],
-    treatmentTopics: [],
-    treatmentDescription: [],
-    resultTopics: [],
-    doctor: [],
-    doctorResponsibility: [],
+    department: [""],
+    treatmentTopics: [""],
+    treatmentDescription: [""],
+    resultTopics: [""],
+    doctor: [""],
+    doctorResponsibility: [""],
     setStateDate: () => {},
     setEndDate: () => {},
     setDepartment: () => {},
@@ -46,12 +46,12 @@ export const FormContext = createContext<IForm>(defaultContextValue);
 export const FormProvider = ({ children }: IProps) => {
     const [startDate, setStateDate] = useState();
     const [endDate, setEndDate] = useState();
-    const [department, setDepartment] = useState<string[]>([]);
-    const [treatmentTopics, setTreatmentTopics] = useState<string[]>([]);
-    const [treatmentDescription, setTreatmentDescription] = useState<string[]>([]);
-    const [resultTopics, setResultTopics] = useState<string[]>([]);
-    const [doctor, setDoctor] = useState<string[]>([]);
-    const [doctorResponsibility, setDoctorResponsibility] = useState<string[]>([]);
+    const [department, setDepartment] = useState<string[]>([""]);
+    const [treatmentTopics, setTreatmentTopics] = useState<string[]>([""]);
+    const [treatmentDescription, setTreatmentDescription] = useState<string[]>([""]);
+    const [resultTopics, setResultTopics] = useState<string[]>([""]);
+    const [doctor, setDoctor] = useState<string[]>([""]);
+    const [doctorResponsibility, setDoctorResponsibility] = useState<string[]>([""]);
 
     return (
         <FormContext.Provider value={{

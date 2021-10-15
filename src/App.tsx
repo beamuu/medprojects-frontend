@@ -15,6 +15,12 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
+                <Route exact path="/join">
+                    <Join />
+                </Route>
+                <Route exact path="/">
+                    <Home />
+                </Route>
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Route exact path="/mh">
                         <HostProvider>
@@ -25,12 +31,7 @@ function App() {
                         <Setup />
                     </Route>
                 </Web3ReactProvider>
-                <Route exact path="/join">
-                    <Join />
-                </Route>
-                <Route exact path="/">
-                    <Home />
-                </Route>
+
             </Switch>
         </BrowserRouter>
     );

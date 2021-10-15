@@ -1,7 +1,8 @@
-import { TextField } from "@mui/material";
-import { useContext } from "react";
+import { Button, TextField } from "@mui/material";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { FormContext } from "../../contexts/Form";
+import DynamicForm from "./DynamicForm";
 
 const RecordContainer = styled.div`
     min-height: 400px;
@@ -14,31 +15,19 @@ const RecordContainer = styled.div`
 
 export default function Form() {
     
-    const {
-        startDate ,
-        endDate,
-        department,
-        treatmentTopics,
-        treatmentDescription,
-        resultTopics,
-        doctor,
-        doctorResponsibility,
-        setStateDate,
-        setEndDate,
-        setDepartment,
-        setTreatmentTopics,
-        setTreatmentDescription,
-        setResultTopics,
-        setDoctor,
-        setDoctorResponsibility,
-        
-    } = useContext(FormContext);
+
+
+    // useEffect(() => {
+    //     console.log(treatmentTopics);
+    //     console.log(treatmentDescription);
+    // }, [treatmentTopics, treatmentDescription])
 
     return (
         <RecordContainer>
             <div className="d-flex align-items-center my-2">
-                <p>RECORD FOR</p>
+                <p>THIS RECORD IS FOR</p>
                 <TextField id="standard-basic" label="Patient Address" variant="filled" className="mx-3" />
+                <p>(ADDRESS ON PATIENT'S METAMASK)</p>
             </div>
             <div className="d-flex align-items-center my-2">
                 <p>BY</p>
@@ -64,7 +53,14 @@ export default function Form() {
                         <input type="datetime-local"/>
                     </div>
                 </div>
-
+                <DynamicForm 
+                    topic={treatmentTopics} 
+                    setTopic={setTreatmentTopics} 
+                    description={treatmentDescription}
+                    setDescription={setTreatmentDescription}
+                    title="Treatments"
+                    />
+                <Button onClick={() => alert(treatmentDescription[0])}>click me</Button>
             </div>
         </RecordContainer>
     )
