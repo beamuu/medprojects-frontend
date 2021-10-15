@@ -1,4 +1,4 @@
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Tooltip } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,9 +8,11 @@ import { FormContext } from "../../contexts/Form";
 interface IProps {
     topic: string[];
     description: string[];
-    setTopic: any;
-    setDescription: any;
+    setTopic: React.Dispatch<React.SetStateAction<string[]>>;
+    setDescription: React.Dispatch<React.SetStateAction<string[]>>;
     title: string;
+    topicLabel: string;
+    descriptionLabel: string;
 }
 
 const Container = styled.div`
@@ -19,20 +21,18 @@ const Container = styled.div`
     margin: 30px 0;
     padding: 30px 20px;
     border-radius: 6px;
-    border: solid 1px #bfd6f5;
+    border: solid 1px #a8aab3;
 `
 
-export default function DynamicForm({ topic, description, setTopic, setDescription, title }: IProps) {
+export default function DynamicForm({ topic, description, setTopic, setDescription, title, topicLabel, descriptionLabel }: IProps) {
 
     const [comps, setComps] = useState<any[]>([]);
-    const [re, setRe] = useState<boolean>(false);
-    const toggleRender = () => {
-        setRe(!re);
-    }
+
+
     const preRender = () => {
         const tmp = [];
         for (var i = 0; i < topic.length; i++) {
-            console.log(i);
+
             tmp.push(
                 <Each
                     topic={topic}
@@ -40,6 +40,8 @@ export default function DynamicForm({ topic, description, setTopic, setDescripti
                     setTopic={setTopic}
                     setDescription={setDescription}
                     index={i}
+                    topicLabel={topicLabel}
+                    descriptionLabel={descriptionLabel}
                 />
             )
         }
@@ -52,14 +54,10 @@ export default function DynamicForm({ topic, description, setTopic, setDescripti
     }
 
     useEffect(() => {
-        console.log("rendering");
         preRender();
-    }, [topic, description])
+    }, [topic])
 
-    useEffect(() => {
-        console.log("comps changed")
-        console.log(comps);
-    }, [comps])
+
 
     return (
         <Container>
@@ -67,10 +65,10 @@ export default function DynamicForm({ topic, description, setTopic, setDescripti
             {
                 comps.map((comp: any) => comp)
             }
-            <div className="d-flex justify-content-center my-3">
+            <div className="d-flex justify-content-center mt-3">
                 <Tooltip title="Add field">
                     <IconButton>
-                        <AddCircleIcon fontSize="large" sx={{ color: "#3adeaf" }} onClick={handleAddField} />
+                        <AddCircleIcon fontSize="large" sx={{ color: "#d5d8e3" }} onClick={handleAddField} />
                     </IconButton>
                 </Tooltip>
             </div>
@@ -83,16 +81,28 @@ interface IEach {
     index: number;
     topic: string[];
     description: string[];
-    setTopic: any;
-    setDescription: any;
+    setTopic: React.Dispatch<React.SetStateAction<string[]>>;
+    setDescription: React.Dispatch<React.SetStateAction<string[]>>;
+    topicLabel: string;
+    descriptionLabel: string;
 }
 
-function Each({ index, topic, setTopic, description, setDescription }: IEach) {
-
-
+function Each({ index, topic, setTopic, description, setDescription, topicLabel, descriptionLabel }: IEach) {
 
     const [topicInput, setTopicInput] = useState(topic[index]);
     const [descriptionInput, setDescriptionInput] = useState(description[index]);
+    const [deleted, setDeleted] = useState(false);
+
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         let tmp = topic;
         tmp[index] = topicInput;
@@ -112,36 +122,47 @@ function Each({ index, topic, setTopic, description, setDescription }: IEach) {
         setDescriptionInput(e.target.value);
     }
     const handleRemove = () => {
-        console.log("remove at index", index);
-        console.log("delete");
+        if (topic.length < 2 || description.length < 2) {
+            return handleClickOpen();
+        }
         let _topic = topic;
         let _description = description;
         _topic.splice(index, 1);
         _description.splice(index, 1);
-        console.log(_topic);
-        console.log(_description);
-        setTopic(_topic);
-        setDescription(_description);
-
+        setTopic([..._topic]);
+        setDescription([..._description]);
     }
 
-    useEffect(() => {
-        console.log(topic);
-        setTopicInput(topic[index]);
-    }, [topic]);
-    useEffect(() => {
-        console.log(description);
-        setDescriptionInput(description[index]);
-    }, [description]);
+    if (deleted) {
+        return null;
+    }
 
 
     return (
         <div className="row m-0 my-4">
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Can't delete this field
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Every topics need to have at least one field. If you want to leave this blank, use "-" instead.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>I got it</Button>
+                </DialogActions>
+            </Dialog>
             <div className="col-3">
-                <TextField value={topicInput} onChange={handleTopicChange} label="Topic" error={!topicInput ? true : false} variant="filled" size="small" helperText={!topicInput ? "Topic?" : ""}></TextField>
+                <TextField value={topicInput} onChange={handleTopicChange} label={topicLabel} error={!topicInput ? true : false} variant="filled" size="small" helperText={!topicInput ? `${topicLabel}?` : ""}></TextField>
             </div>
             <div className="col-6">
-                <TextField value={descriptionInput} onChange={handleDescriptionChange} error={!descriptionInput ? true : false} label="Details (1 line or more)" size="small" variant="filled" multiline style={{ width: "100%" }} helperText={!descriptionInput ? "Field is empty" : ""}></TextField>
+                <TextField value={descriptionInput} onChange={handleDescriptionChange} error={!descriptionInput ? true : false} label={descriptionLabel} size="small" variant="filled" multiline style={{ width: "100%" }} helperText={!descriptionInput ? "Field is empty" : ""}></TextField>
             </div>
             <div className="col-2 d-flex justify-content-end align-items-center">
                 <Tooltip title="Delete field">

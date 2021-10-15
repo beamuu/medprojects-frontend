@@ -96,7 +96,8 @@ export default function RecordView() {
 
     return (
         <div>
-            <p>You have {records} record(s)</p>
+            <p>Your patient address is : <b>{patient}</b></p>
+            <p>You have <b>{records}</b> record(s)</p>
 
             <div className="my-3 d-flex align-items-center">
                 <TextField id="standard-basic" label="index" variant="standard" />
