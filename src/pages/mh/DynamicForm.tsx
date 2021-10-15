@@ -35,7 +35,10 @@ export default function DynamicForm({ topic, description, setTopic, setDescripti
             console.log(i);
             tmp.push(
                 <Each
-                    for=""
+                    topic={topic}
+                    description={description}
+                    setTopic={setTopic}
+                    setDescription={setDescription}
                     index={i}
                 />
             )
@@ -78,33 +81,29 @@ export default function DynamicForm({ topic, description, setTopic, setDescripti
 
 interface IEach {
     index: number;
-    target: string;
+    topic: string[];
+    description: string[];
+    setTopic: any;
+    setDescription: any;
 }
 
-function Each({ index, target }: IEach) {
+function Each({ index, topic, setTopic, description, setDescription }: IEach) {
 
-    const {
-        startDate,
-        endDate,
-        department,
-        treatmentTopics,
-        treatmentDescription,
-        resultTopics,
-        doctor,
-        doctorResponsibility,
-        setStateDate,
-        setEndDate,
-        setDepartment,
-        setTreatmentTopics,
-        setTreatmentDescription,
-        setResultTopics,
-        setDoctor,
-        setDoctorResponsibility,
 
-    } = useContext(FormContext);
 
-    const [topicInput, setTopicInput] = useState();
-    const [descriptionInput, setDescriptionInput] = useState();
+    const [topicInput, setTopicInput] = useState(topic[index]);
+    const [descriptionInput, setDescriptionInput] = useState(description[index]);
+    useEffect(() => {
+        let tmp = topic;
+        tmp[index] = topicInput;
+        setTopic(tmp);
+    }, [topicInput]);
+
+    useEffect(() => {
+        let tmp = description;
+        tmp[index] = descriptionInput;
+        setDescription(tmp);
+    }, [descriptionInput]);
 
     const handleTopicChange = async (e: any) => {
         setTopicInput(e.target.value);
@@ -113,9 +112,27 @@ function Each({ index, target }: IEach) {
         setDescriptionInput(e.target.value);
     }
     const handleRemove = () => {
+        console.log("remove at index", index);
+        console.log("delete");
+        let _topic = topic;
+        let _description = description;
+        _topic.splice(index, 1);
+        _description.splice(index, 1);
+        console.log(_topic);
+        console.log(_description);
+        setTopic(_topic);
+        setDescription(_description);
+
     }
 
-
+    useEffect(() => {
+        console.log(topic);
+        setTopicInput(topic[index]);
+    }, [topic]);
+    useEffect(() => {
+        console.log(description);
+        setDescriptionInput(description[index]);
+    }, [description]);
 
 
     return (

@@ -15,7 +15,25 @@ const RecordContainer = styled.div`
 
 export default function Form() {
     
+    const {
+        startDate,
+        endDate,
+        department,
+        treatmentTopics,
+        treatmentDescription,
+        resultTopics,
+        doctor,
+        doctorResponsibility,
+        setStateDate,
+        setEndDate,
+        setDepartment,
+        setTreatmentTopics,
+        setTreatmentDescription,
+        setResultTopics,
+        setDoctor,
+        setDoctorResponsibility,
 
+    } = useContext(FormContext);
 
     // useEffect(() => {
     //     console.log(treatmentTopics);
