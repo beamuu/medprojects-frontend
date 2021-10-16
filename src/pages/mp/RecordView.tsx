@@ -1,4 +1,5 @@
-import { Alert, Button, LinearProgress, TextField } from "@mui/material";
+import { Alert, Button, CircularProgress, Fab, LinearProgress, TextField, SpeedDial, SpeedDialIcon, SpeedDialAction } from "@mui/material";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useWeb3React } from "@web3-react/core";
 import { AbiItem } from 'web3-utils';
 import { useContext, useEffect, useState } from "react";
@@ -6,8 +7,7 @@ import { HospitalListContext } from "../../contexts/HospitalList";
 import compiledPatient from "../../contracts/Patient.json";
 import useHospital from "../../hooks/useHospital";
 import web3 from "../../providers/web3";
-import Record from "./Record";
-import { hospitalArray } from "../../data/hospital";
+import Record, { IRecord } from "./Record";
 
 export default function RecordView() {
     const { account } = useWeb3React();
@@ -18,6 +18,46 @@ export default function RecordView() {
     const [records, setRecords] = useState<number>(0);
     const [sendCreated, setSendCreated] = useState<boolean>(false);
     const [createFail, setCreateFail] = useState<boolean>(false);
+
+    const [limitation, setLimitation] = useState<number>(0);
+    const [recordsArray, setRecordsArray] = useState<IRecord[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const getExactRecord = async (index: number) => {
+        PatientInstance.options.address = patient;
+        const r = await PatientInstance.methods.getExactRecord(index).call();
+        return r;
+    }
+
+
+
+    useEffect(() => {
+        console.log(recordsArray);
+    }, [recordsArray])
+
+    const loadRecord = async () => {
+        setLoading(true);
+        const tmp: IRecord[] = []
+        for (var i = 0; i < records; i++) {
+            const _record = await getExactRecord(i);
+            tmp.push(_record)
+        }
+        setRecordsArray([...tmp]);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        if (records > 10) {
+            setLimitation(10);
+        }
+        else {
+            setLimitation(records);
+        }
+        loadRecord();
+
+    }, [records])
+
+
     const handleCreateNewPatient = async () => {
         setSendCreated(true);
         const res = await createPatient();
@@ -96,7 +136,7 @@ export default function RecordView() {
 
     return (
         <div>
-            <p>Your patient address is : <b>{patient}</b></p>
+            <p>Your patient contract is : <b>{patient}</b></p>
             <p>You have <b>{records}</b> record(s)</p>
 
             <div className="my-3 d-flex align-items-center">
@@ -105,11 +145,14 @@ export default function RecordView() {
             </div>
 
             <div className="my-5">
-                <Record
-                    topic="Megical Surgery"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus ornare accumsan. Nam lobortis, odio at pellentesque porta, mi felis viverra nibh, et ullamcorper elit ipsum vitae odio. Vestibulum consectetur turpis eu massa ultricies elementum. Nunc nec condimentum odio. Quisque rhoncus massa nec imperdiet vestibulum. Nunc auctor viverra quam, id gravida neque."
-                />
-                <Record />
+                {
+                    recordsArray.map((element: IRecord, index: number) => <Record data={element} patient={account} contract={patient} index={index} />)
+                }
+            </div>
+            <div className="d-flex justify-content-center">
+                {
+                    loading ? <CircularProgress /> : null
+                }
             </div>
         </div>
     )
