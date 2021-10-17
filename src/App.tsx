@@ -7,6 +7,8 @@ import { Web3ReactProvider } from '@web3-react/core';
 import Web3 from "web3";
 import Admin from './pages/mh';
 import { HostProvider } from './contexts/Host';
+import MedScan from './pages/medscan';
+import Scan from './pages/scan';
 
 function App() {
     function getLibrary(provider: any) {
@@ -29,6 +31,12 @@ function App() {
                     </Route>
                     <Route exact path="/mp">
                         <Setup />
+                    </Route>
+                    <Route exact path="/medscan/:patientAddress/:index">
+                        <Scan />
+                    </Route>
+                    <Route exact path="/medscan">
+                        <MedScan />
                     </Route>
                 </Web3ReactProvider>
 

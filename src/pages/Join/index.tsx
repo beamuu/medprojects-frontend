@@ -1,9 +1,11 @@
 import Button from "@mui/material/Button";
+import { useHistory } from "react-router";
 import Navbar from "../../components/Navbar";
 import Screen from "../../components/Screen";
 import UserTypeCard from "./UserTypeCard";
 
 export default function Join() {
+    const history = useHistory();
     return (
         <>
             <Navbar />
@@ -18,8 +20,8 @@ export default function Join() {
                         </div>
                         <div className="col-lg d-flex align-items-center">
                             <div className="full-width">
-                                <UserTypeCard title="Patients" desc="I am looking for a medical data storage technology." color="#00bf7c"/>
-                                <UserTypeCard title="Medical Providers" desc="We need a smart contracts for storing customer's data." color="#0a55f7"/>
+                                <UserTypeCard title="Patients" desc="I am looking for a medical data storage technology." color="#00bf7c" onClick={() => history.push("/mp")}/>
+                                <UserTypeCard title="Medical Providers" desc="We need a smart contracts for storing customer's data." color="#0a55f7" onClick={() => history.push("/mh")}/>
                             </div>
                         </div>
                     </div>

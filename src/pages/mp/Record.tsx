@@ -92,7 +92,7 @@ export default function Record({ data, patient, contract, index }: IProps) {
                 <h4>Patient Medical Record</h4>
                 <hr className="mb-4" />
 
-                <Row title="Patient" value={patient}/>
+                <Row title="Patient" value={patient ? patient : "unknown"}/>
                 <Row title="Contract" value={contract}/>
                 <Row title="Date of admission (started)" value={new Date(parseInt(data._dateStart)*1000).toLocaleString()}/>
                 <Row title="Date of admission (ended)" value={new Date(parseInt(data._dateEnd)*1000).toLocaleString()}/>
