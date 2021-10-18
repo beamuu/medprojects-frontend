@@ -40,6 +40,11 @@ export default function useHospital(contractAddress: string, account: string | n
     }
 
     useEffect(() => {
+        initOwner();
+        initPatient();
+    }, [contractAddress])
+
+    useEffect(() => {
         if (account) {
             initOwner();
             initPatient();

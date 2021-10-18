@@ -2,7 +2,7 @@ import { Alert, Button, CircularProgress, Fab, LinearProgress, TextField, SpeedD
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useWeb3React } from "@web3-react/core";
 import { AbiItem } from 'web3-utils';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { HospitalListContext } from "../../contexts/HospitalList";
 import compiledPatient from "../../contracts/Patient.json";
 import useHospital from "../../hooks/useHospital";
@@ -55,7 +55,7 @@ export default function RecordView() {
         }
         loadRecord();
 
-    }, [records])
+    }, [records]);
 
 
     const handleCreateNewPatient = async () => {
@@ -87,7 +87,7 @@ export default function RecordView() {
             PatientInstance.options.address = patient;
             getRecords();
         }
-    }, [patient])
+    }, [patient, hospitalContractAddress]);
 
     if (patient === "") {
         return (
