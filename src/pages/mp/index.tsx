@@ -65,7 +65,7 @@ export default function Setup() {
         if (chainId !== 97) {
             requestChangeNetwork()
         }
-    }, [])
+    }, [chainId])
     return (
         <>
             <Navbar />

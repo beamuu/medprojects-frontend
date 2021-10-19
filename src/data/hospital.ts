@@ -2,7 +2,7 @@ export const hospitalArray = [
     {
         name: "Medprojects (Testnet)",
         location: "Bangkok, Thailand",
-        address: "0xdEfF5372eB90E947230C7f30BCd8ADa716140615"
+        address: "0x11AfFb9e1235CfD74bac84a3609E3Ca57Eb96Ec6"
     },
     {
         name: "Medprojects (Beta)",
