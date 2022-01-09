@@ -26,7 +26,7 @@ export default function Join() {
                         </div>
                     </div>
                     <div className="text-center">
-                        <p>Please read the details below and accept the conditions at the end of the page.</p>
+                        <p>Read project's documentation <a href="https://github.com/nutchanonc/medprojects/blob/main/docs/medprojects.md" target="_blank">here</a></p>
                     </div>
                 </div>
             </Screen>
@@ -63,19 +63,6 @@ export default function Join() {
                     </div>
                 </div>
             </Screen>
-
-            <Screen>
-                <div className="container my-5">
-                    <hr className="my-5" />
-                    <div className="text-center">
-                        <h4>Understanding Blockchain</h4>
-                        <div className="mt-5">
-                            <p>Blockchain is one kind of Distributed Ledger Technology (DLT)</p>
-                        </div>
-                    </div>
-                </div>
-            </Screen>
-            
         </>
     )
 }

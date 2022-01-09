@@ -17,11 +17,8 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/join">
-                    <Join />
-                </Route>
                 <Route exact path="/">
-                    <Home />
+                    <Join />
                 </Route>
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Route exact path="/mh">
