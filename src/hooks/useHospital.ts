@@ -79,6 +79,7 @@ export function useHostedHospital(contractAddress: string, account: string | nul
         try {
             Hospital.options.address = contractAddress;
             const _owner = await Hospital.methods.owner().call();
+            // console.log(_owner)
             setOwner(_owner);
             setValid(true);
         } catch (error) {
